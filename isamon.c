@@ -155,6 +155,13 @@ int get_args(int argc, char *argv[]){
 					fprintf(stderr, "netmask not found :(\n");
 				}
 				*mask = 0;
+				if(mask != NULL){
+					tmp =  strtol(mask+1, 0, 10);
+					for(int i = 0; i < tmp; i++){
+						netmask |= 1 << (31-i);
+					}
+				}
+				
 				if(!inet_aton(optarg, &network)){
 					fprintf(stderr, "invalid address :(\n");
 				}
@@ -170,12 +177,7 @@ int get_args(int argc, char *argv[]){
 					fprintf(stderr, "network mask must be smaller than 32 i belive... \n");
 					return 1;
 				}
-				if(mask != NULL){
-					tmp =  strtol(mask+1, 0, 10);
-					for(int i = 0; i < tmp; i++){
-						netmask |= 1 << (31-i);
-					}
-				}
+				
 				if(check_network(&network, tmp)){
 					fprintf(stderr, "Invalid network!\n");
 					return 1;
